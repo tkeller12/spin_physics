@@ -30,12 +30,12 @@ print(SxIx2)
 print(np.allclose(SxIx,SxIx2))
 omega_S = 1.76e11 # rad / (s * T)
 omega_I = 267.522e6 # rad / (s * T)
-Aiso = 2*np.pi * 500.e6 # Isotropic Hyperfine coupling rad / s
+Aiso = 2*np.pi * 100.e6 # Isotropic Hyperfine coupling rad / s
 
 B0 = 0.35# T
 
-H = omega_S/(2.*np.pi)*B0*Sz + omega_I/(2.*np.pi)*B0*Iz + Aiso * np.dot(Sz,Iz)
-#H = omega_S/(2.*np.pi)*B0*Sz + omega_I/(2.*np.pi)*B0*Iz + Aiso * (np.dot(Sx,Ix) + np.dot(Sy,Iy) + np.dot(Sz,Iz))
+#H = omega_S/(2.*np.pi)*B0*Sz + omega_I/(2.*np.pi)*B0*Iz + Aiso * np.dot(Sz,Iz)
+H = omega_S/(2.*np.pi)*B0*Sz + omega_I/(2.*np.pi)*B0*Iz + Aiso * (np.dot(Sx,Ix) + np.dot(Sy,Iy) + np.dot(Sz,Iz))
 
 print('Hamiltonian')
 print(H)
@@ -57,5 +57,8 @@ print('%0.05f GHz'%(E13 / 1e9))
 print('%0.05f GHz'%(E24 / 1e9))
 
 figure()
-matshow(abs(H), cmap = cm.YlOrRd)
+#matshow(abs(H), cmap = cm.YlOrRd)
+matshow(abs(H), cmap = cm.jet)
+#matshow(abs(H), cmap = cm.turbo)
+#matshow(abs(H), cmap = cm.nipy_spectral)
 show()
