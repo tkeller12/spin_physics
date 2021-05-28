@@ -39,15 +39,23 @@ H = omega_S/(2.*np.pi)*B0*Sz + omega_I/(2.*np.pi)*B0*Iz + Aiso * (np.dot(Sx,Ix) 
 
 print('Hamiltonian')
 print(H)
-out = np.linalg.eig(H)
+out = np.linalg.eigvals(H)
+from scipy.linalg import eigvals
+out = eigvals(H)
 
-E = out[0]
+print(out)
+#E = out[0]
+E = np.real(out)
 print(E)
 
 E12 = E[0] - E[1]
 E34 = E[2] - E[3]
 E13 = E[0] - E[2]
 E24 = E[1] - E[3]
+print(E12)
+print(E34)
+print(E13)
+print(E24)
 
 print('Nuclear')
 print('%0.05f MHz'%(E12 / 1e6))
@@ -56,7 +64,7 @@ print('Electron')
 print('%0.05f GHz'%(E13 / 1e9))
 print('%0.05f GHz'%(E24 / 1e9))
 
-figure()
+#figure()
 #matshow(abs(H), cmap = cm.YlOrRd)
 matshow(abs(H), cmap = cm.jet)
 #matshow(abs(H), cmap = cm.turbo)
