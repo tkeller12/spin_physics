@@ -47,7 +47,7 @@ operators = {
         '$S_zI_y$' : SzIy,
 
         '$S_xI_x$' : SxIx,
-        '$S_yI_y$' : SxIy,
+        '$S_yI_y$' : SyIy,
 
         '$S_xI_y$' : SxIy,
         '$S_yI_x$' : SyIx,
