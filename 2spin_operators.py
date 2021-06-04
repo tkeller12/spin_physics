@@ -29,26 +29,25 @@ SyIy = np.dot(Sx, Ix)
 SxIy = np.dot(Sx, Iy)
 SyIx = np.dot(Sy, Ix)
 
-
 operators = {
         'E': np.eye(4),
+        '$S_z$': Sz,
+        '$I_z$': Iz,
+        '$S_zI_z$' : SzIz,
+
         '$S_x$': Sx,
         '$S_y$': Sy,
-        '$S_z$': Sz,
-        '$I_x$': Ix,
-        '$I_y$': Iy,
-        '$I_z$': Iz,
-
         '$S_xI_z$' : SxIz,
         '$S_yI_z$' : SyIz,
-        '$S_zI_z$' : SzIz,
 
         '$S_zI_x$' : SzIx,
         '$S_zI_y$' : SzIy,
+        '$I_x$': Ix,
+        '$I_y$': Iy,
+
 
         '$S_xI_x$' : SxIx,
         '$S_yI_y$' : SyIy,
-
         '$S_xI_y$' : SxIy,
         '$S_yI_x$' : SyIx,
         }
