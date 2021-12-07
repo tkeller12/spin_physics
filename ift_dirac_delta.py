@@ -5,7 +5,7 @@ periods = 10
 pts = 1024
 
 #x = np.r_[0:periods*2*np.pi:1024j]
-x = np.linspace(0, periods * 2 * np.pi, num = pts+1, endpoint = False)
+x = np.linspace(0, periods * 2 * np.pi, num = pts, endpoint = True)
 
 
 omega = 5.0
