@@ -10,8 +10,7 @@ t = np.r_[0:1:1j*pts]
 y = np.exp(1j*omega*t) * np.exp(-t/tau)
 
 
-#y = np.roll(y,100)
-
+y = np.roll(y,10)
 
 
 ft = np.fft.fftshift(np.fft.fft(y))
@@ -25,7 +24,9 @@ plot(t,y)
 
 
 figure('ft')
-plot(f,ft, '-')
+plot(f,np.real(ft), '-')
+plot(f,np.imag(ft), '-')
+plot(f,np.abs(ft), '-')
 
 
 show()
