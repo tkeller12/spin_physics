@@ -2,9 +2,23 @@ import numpy as np
 from scipy.linalg import expm
 from matplotlib.pylab import *
 
-sigma_x = 0.5*np.r_[[[0, 1],[1, 0]]] + 0j
-sigma_y = 0.5*np.r_[[[0,-1j],[1j, 0]]] + 0j
-sigma_z = 0.5*np.r_[[[1, 0],[0, -1]]] + 0j
+sigma_x = 0.5*np.r_[
+        [
+            [0, 1], 
+            [1, 0] ]
+        ] + 0j
+
+sigma_y = 0.5*np.r_[
+        [
+            [0,-1j], 
+            [1j, 0] ]
+        ] + 0j
+
+sigma_z = 0.5*np.r_[
+        [
+            [1, 0], 
+            [0, -1] ]
+        ] + 0j
 
 print(sigma_x)
 print(sigma_y)
@@ -63,4 +77,25 @@ xlabel('Frequency')
 #title('Spectrum')
 #plot(f,np.real(spec))
 #xlabel('Frequency (Hz)')
+
+Px = expm(1j*(np.pi/2)*sigma_x)
+Py = expm(1j*(np.pi/2)*sigma_y)
+
+sigma_init = np.r_[
+        [
+            [1,0], 
+            [0,0]]
+        ]
+
+#testx = np.dot(np.dot(Px, sigma_z), Px.conj())
+#testy = np.dot(np.dot(Py, sigma_z), Py.conj())
+testx = Px @ sigma_init @ Px.conj()
+testy = Py @ sigma_init @ Py.conj()
+
+#testx = np.dot(Px, np.dot(sigma_z, Px.conj()))
+#testy = np.dot(Py, np.dot(sigma_z, Py.conj()))
+
+print(testx)
+print(testy)
+
 show()
