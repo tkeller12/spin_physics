@@ -55,6 +55,6 @@ xlabel('Time (s)')
 
 figure('spec')
 title('Spectrum')
-plot(f,spec)
+plot(f,np.real(spec))
 xlabel('Frequency (Hz)')
 show()

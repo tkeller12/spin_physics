@@ -42,7 +42,11 @@ print(H)
 out = np.linalg.eig(H)
 
 E = out[0]
+E_vectors = out[1]
+print('Eigenvalues')
 print(E)
+print('Eigenvectors')
+print(E_vectors)
 
 E12 = E[0] - E[1]
 E34 = E[2] - E[3]

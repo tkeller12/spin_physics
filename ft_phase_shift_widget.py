@@ -1,7 +1,7 @@
 import numpy as np
 from matplotlib.pylab import *
 
-pts = 1024
+pts = 256
 omega = 50
 tau = 0.2
 

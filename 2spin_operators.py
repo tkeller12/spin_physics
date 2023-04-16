@@ -61,6 +61,7 @@ for row in range(4):
     for column in range(4):
         O = ops[ix]
         axs[row, column].matshow(np.abs(operators[O]), cmap = cm.YlGn)
+#        axs[row, column].matshow(np.imag(operators[O]), cmap = cm.YlGn)
         axs[row, column].set_title(O)
         axs[row, column].get_xaxis().set_ticks([])
         axs[row, column].get_yaxis().set_ticks([])
