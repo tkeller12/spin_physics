@@ -81,19 +81,18 @@ xlabel('Frequency')
 Px = expm(1j*(np.pi/2)*sigma_x)
 Py = expm(1j*(np.pi/2)*sigma_y)
 
-sigma_init = np.r_[
-        [
-            [1,0], 
-            [0,0]]
-        ]
+#sigma_init = np.r_[
+#        [
+#            [1,0], 
+#            [0,0]]
+#        ]
 
-#testx = np.dot(np.dot(Px, sigma_z), Px.conj())
-#testy = np.dot(np.dot(Py, sigma_z), Py.conj())
-testx = Px @ sigma_init @ Px.conj()
-testy = Py @ sigma_init @ Py.conj()
+sigma_init = sigma_z
+#testx = Px @ sigma_init @ Px.conj()
+#testy = Py @ sigma_init @ Py.conj()
+testx = Px @ sigma_init @ Px.T
+testy = Py @ sigma_init @ Py.T
 
-#testx = np.dot(Px, np.dot(sigma_z, Px.conj()))
-#testy = np.dot(Py, np.dot(sigma_z, Py.conj()))
 
 print(testx)
 print(testy)
