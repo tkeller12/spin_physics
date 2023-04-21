@@ -91,7 +91,7 @@ Py = expm(1j*(np.pi/2)*sigma_y)
 #        ]
 
 sigma_init = sigma_z
-sigma_init = np.r_[[[1,0], [0,0]]]
+#sigma_init = np.r_[[[1,0], [0,0]]]
 #testx = Px @ sigma_init @ Px.conj()
 #testy = Py @ sigma_init @ Py.conj()
 testx = Px @ sigma_init @ Px.T # x-pulse does not work
