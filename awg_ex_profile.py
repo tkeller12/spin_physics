@@ -1,6 +1,7 @@
 import numpy as np
 from scipy.linalg import expm
 from matplotlib.pylab import *
+from pyDEER import awg
 
 sigma_x = 0.5*np.r_[
         [
@@ -37,6 +38,14 @@ pts = 1024 # Points in FID
 
 tp = np.pi/2 / B1
 
+pulse = awg.gaussian_pulse(100e-9,5)
+time = pulse[0]
+B1 = pulse[1]
+
+figure('pulse shape')
+plot(time,B1)
+show()
+
 omega_array = np.r_[-omega/2:omega/2:1j*pts]
 
 coil = sigma_x + 1j*sigma_y # Detection Operator (NMR Coil)
@@ -47,23 +56,27 @@ coil = sigma_x + 1j*sigma_y # Detection Operator (NMR Coil)
 
 #sigma = sigma_z # Initial Density Matrix (After 90-pulse)
 
-M_list = []
+M = np.zeros((time,freq))
 
-for ix in range(pts):
+#M_list = []
+
+for freq_ix, f in range(freq):
     sigma = sigma_z # Initial Density Matrix
 
     sigma = np.r_[[[1,0], [0,0]]]
-    # re-calculate spin hamiltonian for offset
-#    H = 2*np.pi * omega_array[ix] * sigma_z + np.pi/2 * sigma_y # Calculate Hamiltonian (only Zeeman)
 
-#    H = 2*np.pi * tp * omega_array[ix] * sigma_z + B1 * tp * sigma_x # Calculate Hamiltonian (only Zeeman)
-    H = 2*np.pi * tp * omega_array[ix] * sigma_z + B1 * tp * sigma_y # Calculate Hamiltonian (only Zeeman)
-    P = expm(1j*H) # Define Propagator
-#    sigma = np.dot(np.dot(P,sigma),np.conjugate(P)) # Propagate Density Matrix
-    sigma = np.dot(np.dot(P,sigma),P.conj()) # Propagate Density Matrix
+    for t_ix, t in enumerate(time):
+        # re-calculate spin hamiltonian for offset
+    #    H = 2*np.pi * omega_array[ix] * sigma_z + np.pi/2 * sigma_y # Calculate Hamiltonian (only Zeeman)
 
-    M = np.trace(np.dot(coil,sigma)) # Detect
-    M_list.append(M) # Append to FID array
+    #    H = 2*np.pi * tp * omega_array[ix] * sigma_z + B1 * tp * sigma_x # Calculate Hamiltonian (only Zeeman)
+        H = 2*np.pi * tp * omega_array[ix] * sigma_z + B1 * tp * sigma_y # Calculate Hamiltonian (only Zeeman)
+        P = expm(1j*H) # Define Propagator
+    #    sigma = np.dot(np.dot(P,sigma),np.conjugate(P)) # Propagate Density Matrix
+        sigma = np.dot(np.dot(P,sigma),P.conj()) # Propagate Density Matrix
+
+        M = np.trace(np.dot(coil,sigma)) # Detect
+        M_list.append(M) # Append to FID array
 
 
 M = np.array(M_list)
