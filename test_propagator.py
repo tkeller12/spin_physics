@@ -1,53 +1,54 @@
 import numpy as np
 from scipy.linalg import expm
 from matplotlib.pylab import *
-from pyDEER import awg
 
-sigma_x = 0.5*np.r_[
+# Define spin operators
+Sx = 0.5*np.r_[
         [
             [0, 1], 
             [1, 0] ]
         ] + 0j
 
-sigma_y = 0.5*np.r_[
+Sy = 0.5*np.r_[
         [
             [0,-1j], 
             [1j, 0] ]
         ] + 0j
 
-sigma_z = 0.5*np.r_[
+Sz = 0.5*np.r_[
         [
             [1, 0], 
             [0, -1] ]
         ] + 0j
 
-print(sigma_x)
-print(sigma_y)
-print(sigma_z)
+print(Sx)
+print(Sy)
+print(Sz)
 
 
 print('commutator test')
-print(np.dot(sigma_x,sigma_y) - np.dot(sigma_y,sigma_x))
-print(sigma_z * 1j)
-print(np.allclose(sigma_z * 1j, np.dot(sigma_x,sigma_y) - np.dot(sigma_y,sigma_x)))
+print(np.dot(Sx,Sy) - np.dot(Sy,Sx))
+print(Sz * 1j)
+print(np.allclose(Sz * 1j, np.dot(Sx,Sy) - np.dot(Sy,Sx)))
 
 print('Propagator Test')
-Px = expm(1j*np.pi/2*sigma_x) # Define Propagator
-Py = expm(1j*np.pi/2*sigma_y) # Define Propagator
+Px = expm(1j*np.pi/2*Sx) # Define Propagator
+Py = expm(1j*np.pi/2*Sy) # Define Propagator
 
 
-sigma = sigma_z
+sigma = Sz
 print('Px')
 print(Px)
 print('Py')
 print(Py)
 
-#out = P @ sigma_z @ P.conj()
+#out = Px @ Sz @ Px.T.conj()
+out = Py @ Sz @ Py.T.conj()
 
 print('Sigma y')
-#print(sigma_y)
+print(Sy)
 print('output')
-#print(out)
+print(out)
 
 
 

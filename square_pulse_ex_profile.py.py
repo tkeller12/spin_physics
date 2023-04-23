@@ -56,11 +56,11 @@ for ix in range(pts):
     # re-calculate spin hamiltonian for offset
 #    H = 2*np.pi * omega_array[ix] * sigma_z + np.pi/2 * sigma_y # Calculate Hamiltonian (only Zeeman)
 
-#    H = 2*np.pi * tp * omega_array[ix] * sigma_z + B1 * tp * sigma_x # Calculate Hamiltonian (only Zeeman)
-    H = 2*np.pi * tp * omega_array[ix] * sigma_z + B1 * tp * sigma_y # Calculate Hamiltonian (only Zeeman)
+    H = 2*np.pi * tp * omega_array[ix] * sigma_z + B1 * tp * sigma_x # Calculate Hamiltonian (only Zeeman)
+#    H = 2*np.pi * tp * omega_array[ix] * sigma_z + B1 * tp * sigma_y # Calculate Hamiltonian (only Zeeman)
     P = expm(1j*H) # Define Propagator
 #    sigma = np.dot(np.dot(P,sigma),np.conjugate(P)) # Propagate Density Matrix
-    sigma = np.dot(np.dot(P,sigma),P.conj()) # Propagate Density Matrix
+    sigma = np.dot(np.dot(P,sigma),P.T.conj()) # Propagate Density Matrix
 
     M = np.trace(np.dot(coil,sigma)) # Detect
     M_list.append(M) # Append to FID array
