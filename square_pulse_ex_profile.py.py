@@ -62,6 +62,8 @@ for ix in range(pts):
 #    sigma = np.dot(np.dot(P,sigma),np.conjugate(P)) # Propagate Density Matrix
     sigma = np.dot(np.dot(P,sigma),P.T.conj()) # Propagate Density Matrix
 
+#    sigma = P @ sigma @ P.T.conj()
+
     M = np.trace(np.dot(coil,sigma)) # Detect
     M_list.append(M) # Append to FID array
 
