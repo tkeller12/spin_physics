@@ -48,10 +48,11 @@ coil = sigma_x + 1j*sigma_y # Detection Operator (NMR Coil)
 tp = 200e-9
 BW = 200e6
 dt = 1e-9
-t,wurst = deer.wurst(tp, 10, resolution = dt)
+amp = 0.425
+t,wurst = deer.wurst(tp, 20, resolution = dt)
 t,chirp = deer.chirp(tp, BW, resolution = dt)
 
-pulse = wurst * chirp
+pulse = amp * wurst * chirp
 
 pulse *= B1
 figure('Pulse Shape')
