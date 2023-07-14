@@ -4,8 +4,6 @@ from matplotlib.pylab import *
 
 import pyDEER as deer
 
-resolution = 2e-9
-
 sigma_x = 0.5*np.r_[
         [
             [0, 1], 
@@ -49,7 +47,7 @@ coil = sigma_x + 1j*sigma_y # Detection Operator (NMR Coil)
 
 tp = 200e-9
 BW = 200e6
-dt = 2e-9
+dt = 1e-9
 t,wurst = deer.wurst(tp, 10, resolution = dt)
 t,chirp = deer.chirp(tp, BW, resolution = dt)
 
@@ -71,7 +69,7 @@ Mz_list = []
 for omega_ix,omega in enumerate(omega_array):
 #    sigma = sigma_z # Initial Density Matrix
 
-    sigma = np.r_[[[1,0], [0,0]]]
+    sigma = np.r_[[[1,0], [0,0]]] + np.eye(2)
     # re-calculate spin hamiltonian for offset
 #    H = 2*np.pi * omega_array[ix] * sigma_z + np.pi/2 * sigma_y # Calculate Hamiltonian (only Zeeman)
 
