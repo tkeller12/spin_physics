@@ -45,14 +45,17 @@ omega_array = np.r_[-omega_bw/2:omega_bw/2:1j*pts]
 coil = sigma_x + 1j*sigma_y # Detection Operator (NMR Coil)
 
 
-tp = 200e-9
-BW = 200e6
+tp = 32e-9
+BW = 50e6
 dt = 1e-9
-amp = 0.425
-t,wurst = deer.wurst(tp, 20, resolution = dt)
-t,chirp = deer.chirp(tp, BW, resolution = dt)
+amp = 1.
+t,shape = deer.wurst(tp, 100, resolution = dt)
+#t,shape = deer.adiabatic(tp, BW, 3, resolution = dt)
+#t, shape = deer.sinc(tp, 10, resolution = dt)
+t, chirp = deer.chirp(tp, BW, resolution = dt)
 
-pulse = amp * wurst * chirp
+pulse = amp * shape * chirp
+#pulse = amp * shape
 
 pulse *= B1
 figure('Pulse Shape')
@@ -67,6 +70,8 @@ plot(t,np.imag(pulse))
 M_list = []
 Mz_list = []
 
+Mz_array = np.zeros((len(t),len(omega_array)))
+
 for omega_ix,omega in enumerate(omega_array):
 #    sigma = sigma_z # Initial Density Matrix
 
@@ -80,6 +85,8 @@ for omega_ix,omega in enumerate(omega_array):
         P = expm(1j*H*dt) # Define Propagator
         sigma = np.dot(np.dot(P,sigma),P.T.conj()) # Propagate Density Matrix
 
+        Mz_value = np.real(np.trace(np.dot(sigma_z,sigma)))
+        Mz_array[time_ix, omega_ix] = Mz_value
 #    sigma = P @ sigma @ P.T.conj()
 
     M = np.trace(np.dot(coil,sigma)) # Detect
@@ -123,5 +130,10 @@ testy = Py @ sigma_init @ Py.T
 
 print(testx)
 print(testy)
+
+figure()
+imshow(np.real(Mz_array))
+colorbar()
+
 
 show()
