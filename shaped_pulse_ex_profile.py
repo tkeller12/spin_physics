@@ -45,8 +45,8 @@ omega_array = np.r_[-omega_bw/2:omega_bw/2:1j*pts]
 coil = sigma_x + 1j*sigma_y # Detection Operator (NMR Coil)
 
 
-tp = 32e-9
-BW = 50e6
+tp = 200e-9
+BW = 100e6
 dt = 1e-9
 amp = 1.
 t,shape = deer.wurst(tp, 100, resolution = dt)
@@ -132,7 +132,7 @@ print(testx)
 print(testy)
 
 figure()
-imshow(np.real(Mz_array))
+imshow(np.real(Mz_array), aspect = 'auto')
 colorbar()
 
 
