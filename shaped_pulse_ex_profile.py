@@ -34,7 +34,7 @@ print(np.allclose(sigma_z * 1j, np.dot(sigma_x,sigma_y) - np.dot(sigma_y,sigma_x
 
 omega_bw = 500e6 # frequency offset from carrier, Hz
 #tp = 0.0001 # Pulse Length, s
-B1 = 125e6
+B1 = 60e6
 #B1 = 0e6
 pts = 128 # Points in FID
 
@@ -46,15 +46,17 @@ coil = sigma_x + 1j*sigma_y # Detection Operator (NMR Coil)
 
 
 tp = 200e-9
-BW = 100e6
-dt = 1e-9
+BW = 400e6
+dt = 1.e-9
 amp = 1.
-t,shape = deer.wurst(tp, 100, resolution = dt)
+power = 100.
+t,shape = deer.wurst(tp, power, resolution = dt)
 #t,shape = deer.adiabatic(tp, BW, 3, resolution = dt)
 #t, shape = deer.sinc(tp, 10, resolution = dt)
 t, chirp = deer.chirp(tp, BW, resolution = dt)
 
 pulse = amp * shape * chirp
+#pulse = amp * chirp
 #pulse = amp * shape
 
 pulse *= B1
@@ -98,13 +100,13 @@ for omega_ix,omega in enumerate(omega_array):
 M = np.array(M_list)
 Mz = np.array(Mz_list)
 
-figure('Excitation Profile')
-title('Excitation Profile')
-plot(omega_array, np.real(M), label = 'Mx')
-plot(omega_array, np.imag(M), label = 'My')
-plot(omega_array, np.real(Mz), label = 'Mz')
+figure('Excitation_Profile_WURST-%i_%0.0fns_%0.0fMHz'%(power,tp*1e9,BW/1e6))
+title('Excitation Profile\nWURST-%i, %0.0f ns, %0.0f MHz'%(power,tp*1e9,BW/1e6))
+plot(omega_array/1e6, np.real(M), label = 'Mx')
+plot(omega_array/1e6, np.imag(M), label = 'My')
+plot(omega_array/1e6, np.real(Mz), label = 'Mz')
 legend()
-xlabel('Frequency')
+xlabel('Frequency (MHz)')
 
 #figure('spec')
 #title('Spectrum')
