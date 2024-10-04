@@ -37,12 +37,11 @@ omega_array = np.r_[-omega_bw/2:omega_bw/2:1j*pts]
 
 coil = sigma_x + 1j*sigma_y # Detection Operator (NMR Coil)
 
-
 sech = lambda x: 1./np.cosh(x)
 
 dt = 1.e-9 # pulse resolution, s
 tp = 128e-9 # Pulse length, s
-amp = 1. # Pulse amplitude (AWG output level from 0 to 1)
+amp = .1 # Pulse amplitude (AWG output level from 0 to 1)
 BW = 100e6 # Pulse Bandwidth (FWHM), Hz
 beta = 10. # Pulse truncation parameter
 
@@ -53,7 +52,7 @@ mu = np.pi*BW/beta_tp
 
 t = np.r_[0.:tp:dt]
 
-pulse = (sech(beta_tp*(t-0.5*tp)))**(1.+1.j*mu)
+pulse = amp*(sech(beta_tp*(t-0.5*tp)))**(1.+1.j*mu)
 
 figure()
 plot(t*1e9, np.real(pulse), label = 'real')
@@ -70,6 +69,8 @@ M_list = []
 Mz_list = []
 
 Mz_array = np.zeros((len(t),len(omega_array)))
+Mx_array = np.zeros((len(t),len(omega_array)))
+My_array = np.zeros((len(t),len(omega_array)))
 
 for omega_ix,omega in enumerate(omega_array):
     print('Offset: %i of %i'%((omega_ix+1),len(omega_array)))
@@ -83,6 +84,10 @@ for omega_ix,omega in enumerate(omega_array):
         P = expm(1j*H*dt) # Define Propagator
         sigma = np.dot(np.dot(P,sigma),P.T.conj()) # Propagate Density Matrix
 
+        Mx_value = np.real(np.trace(np.dot(sigma_x,sigma)))
+        My_value = np.real(np.trace(np.dot(sigma_y,sigma)))
+        Mx_array[time_ix, omega_ix] = Mx_value
+        My_array[time_ix, omega_ix] = My_value
         Mz_value = np.real(np.trace(np.dot(sigma_z,sigma)))
         Mz_array[time_ix, omega_ix] = Mz_value
 
@@ -109,4 +114,16 @@ xlabel('Frequency (MHz)')
 ylabel('Time (ns)')
 colorbar()
 
+ix = int(pts/2)
+freq = omega_array[ix]
+ax = figure().add_subplot(projection='3d')
+title('Offset %0.0f MHz'%(freq/1e6))
+ax.plot(np.real(Mx_array)[:,ix], np.real(My_array)[:,ix], np.real(Mz_array)[:,ix])
+ax.set_xlim(-.5,.5)
+ax.set_ylim(-.5,.5)
+ax.set_zlim(-.5,.5)
+ax.set_xlabel('Mx')
+ax.set_ylabel('My')
+ax.set_zlabel('Mz')
+tight_layout()
 show()
