@@ -25,6 +25,8 @@ SxIx = np.kron(sigma_x,sigma_z)
 
 SxIx2 = np.dot(Sx,Iz)
 
+coil = Sx + 1j*Sy
+
 print(SxIx)
 print(SxIx2)
 print(np.allclose(SxIx,SxIx2))
@@ -42,7 +44,23 @@ print(H)
 out = np.linalg.eig(H)
 
 E = out[0]
+E_vectors = out[1]
+
+vect1 = E_vectors[:,0]
+vect2 = E_vectors[:,3].T
+
+V = np.dot(np.dot(vect1,coil),vect2)
+
+print('V')
+print(V)
+
+
+
+
+print('Eigenvalues')
 print(E)
+print('Eigenvectors')
+print(E_vectors)
 
 E12 = E[0] - E[1]
 E34 = E[2] - E[3]

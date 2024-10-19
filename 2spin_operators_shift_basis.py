@@ -31,25 +31,24 @@ SyIx = np.dot(Sy, Ix)
 
 operators = {
         'E': np.eye(4),
-        '$S_z$': Sz,
-        '$I_z$': Iz,
-        '$S_zI_z$' : SzIz,
+        '$S_0$': np.sqrt(2)*Sz,
+        '$I_0$': np.sqrt(2)*Iz,
+        '$S_0I_0$' : SzIz,
 
-        '$S_x$': Sx,
-        '$S_y$': Sy,
-        '$S_xI_z$' : SxIz,
-        '$S_yI_z$' : SyIz,
+        '$S^+$': Sx + 1j*Sy,
+        '$S^-$': Sx - 1j*Sy,
+        '$S^+I_0$' : np.dot(Sx + 1j*Sy,Iz),
+        '$S^-I_0$' : np.dot(Sx - 1j*Sy,Iz),
 
-        '$S_zI_x$' : SzIx,
-        '$S_zI_y$' : SzIy,
-        '$I_x$': Ix,
-        '$I_y$': Iy,
+        '$I^+$': Ix + 1j*Iy,
+        '$I^-$': Ix - 1j*Iy,
+        '$S_0I^+$' : np.dot(Sz,Ix + 1j*Iy),
+        '$S_0I^-$' : np.dot(Sz,Ix - 1j*Iy),
 
-
-        '$S_xI_x$' : SxIx,
-        '$S_yI_y$' : SyIy,
-        '$S_xI_y$' : SxIy,
-        '$S_yI_x$' : SyIx,
+        '$S^+I^+$' : np.dot(Ix + 1j*Iy,Sx + 1j*Sy),
+        '$S^-I^+$' : np.dot(Ix - 1j*Iy,Sx + 1j*Sy),
+        '$S^+I^-$' : np.dot(Ix + 1j*Iy,Sx - 1j*Sy),
+        '$S^-I^-$' : np.dot(Ix - 1j*Iy,Sx - 1j*Sy),
         }
 
 fig, axs = plt.subplots(4, 4)
@@ -61,6 +60,7 @@ for row in range(4):
     for column in range(4):
         O = ops[ix]
         axs[row, column].matshow(np.abs(operators[O]), cmap = cm.YlGn)
+#        axs[row, column].matshow(np.imag(operators[O]), cmap = cm.YlGn)
         axs[row, column].set_title(O)
         axs[row, column].get_xaxis().set_ticks([])
         axs[row, column].get_yaxis().set_ticks([])
