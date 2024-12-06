@@ -24,6 +24,29 @@ def wurst(tp, N, resolution):
 
     return t, pulse
 
+def chirp(tp, BW, resolution):
+    '''Complex chirp pulse
+
+    .. math::
+        e^{i 2 \pi (k/2) (t - t_p/2)^2}
+
+    Args:
+        tp (float): Pulse length
+        BW (float): Bandwidth of pulse
+
+    Returns:
+        tuple: tuple containing:
+
+            t (*numpy.ndarray*): Time axis
+
+            pulse (*numpy.ndarray*): Pulse shape
+    '''
+    k = BW/tp
+    t = np.r_[0.:tp:resolution]
+    pulse = np.exp(1.j*2.*np.pi*((k/2.)*((t-tp/2.)**2.)))
+    return t, pulse
+
+
 sigma_x = 0.5*np.r_[
         [
             [0, 1], 
@@ -54,7 +77,7 @@ print(np.allclose(sigma_z * 1j, np.dot(sigma_x,sigma_y) - np.dot(sigma_y,sigma_x
 
 omega_bw = 500e6 # frequency offset from carrier, Hz
 
-tp_180 = 20e-9# 180-pulse length, s
+tp_180 = 10e-9# 180-pulse length, s
 pts = 128 # Points in FID
 
 pulse_B1 = np.pi / tp_180
@@ -64,15 +87,16 @@ omega_array = np.r_[-omega_bw/2:omega_bw/2:1j*pts]
 
 coil = sigma_x + 1j*sigma_y # Detection Operator (NMR Coil)
 
-for power in [2, 5, 10, 100]:
+for power in [5, 10]:
     print('Power: ', power)
 
-    tp = 20e-9
-    BW = 400e6
+    tp = 128e-9
+    BW = 220e6
     dt = 0.1e-9
     amp = 1.
     t, shape = wurst(tp, power, dt)
-    pulse = pulse_B1 * amp * shape
+    t, chirp_shape = chirp(tp, BW, dt)
+    pulse = pulse_B1 * amp * shape * chirp_shape
 
     figure('Pulse Shape')
     plot(t*1e9,np.real(pulse)/pulse_B1, label = 'WURST-%i'%power)
