@@ -30,7 +30,8 @@ print(np.dot(sigma_x,sigma_y) - np.dot(sigma_y,sigma_x))
 print(sigma_z * 1j)
 print(np.allclose(sigma_z * 1j, np.dot(sigma_x,sigma_y) - np.dot(sigma_y,sigma_x)))
 
-pts = 128 # Points in frequency domain sweep
+#pts = 128 # Points in frequency domain sweep
+pts = 4096 # Points in frequency domain sweep
 omega_bw = 500e6 # Bandwidth of Simulation, Hz
 
 omega_array = np.r_[-omega_bw/2:omega_bw/2:1j*pts]
