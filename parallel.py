@@ -83,12 +83,13 @@ def generate_array(size = 100, seed = 0):
         np.ndarray: A 1D array of random numbers.
     """
     result = mesolve(H, rho0, tlist, c_ops, e_ops = e_ops)
-    return result.expect[0]+result.expect[1] + 1j * (result.expect[2]+result.expect[3])
+    out = result.expect[0]+result.expect[1] + 1j * (result.expect[2]+result.expect[3])
+    return np.ones_like(out)
 
 def main():
 
     array_size = pts  # Size of each generated array
-    num_tasks = 1024    # Number of parallel tasks (and thus arrays)
+    num_tasks = 128    # Number of parallel tasks (and thus arrays)
     seeds = [100 + i for i in range(num_tasks)]  # Unique seeds for each task
     
     # Initialize an array to accumulate the sum.

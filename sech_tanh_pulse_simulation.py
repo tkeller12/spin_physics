@@ -1,6 +1,9 @@
 import numpy as np
 from scipy.linalg import expm
 from matplotlib.pylab import *
+import time
+
+start_time = time.time()
 
 sigma_x = 0.5*np.r_[
         [
@@ -30,8 +33,8 @@ print(np.dot(sigma_x,sigma_y) - np.dot(sigma_y,sigma_x))
 print(sigma_z * 1j)
 print(np.allclose(sigma_z * 1j, np.dot(sigma_x,sigma_y) - np.dot(sigma_y,sigma_x)))
 
-#pts = 128 # Points in frequency domain sweep
-pts = 4096 # Points in frequency domain sweep
+pts = 128 # Points in frequency domain sweep
+#pts = 4096 # Points in frequency domain sweep
 omega_bw = 500e6 # Bandwidth of Simulation, Hz
 
 omega_array = np.r_[-omega_bw/2:omega_bw/2:1j*pts]
@@ -79,7 +82,7 @@ for omega_ix,omega in enumerate(omega_array):
     sigma = sigma_z # Initial Density Matrix
 
     # re-calculate spin hamiltonian for offset
-    for time_ix,time in enumerate(t):
+    for time_ix,time_value in enumerate(t):
         B1 = pulse[time_ix]
         H = 2*np.pi * omega * sigma_z + np.real(B1) * sigma_x + np.imag(B1) * sigma_y # Calculate Hamiltonian (only Zeeman)
         P = expm(1j*H*dt) # Define Propagator
@@ -127,4 +130,6 @@ ax.set_xlabel('Mx')
 ax.set_ylabel('My')
 ax.set_zlabel('Mz')
 tight_layout()
+stop_time = time.time()
+print('Time Elapsed: %0.03f'%(stop_time - start_time))
 show()
