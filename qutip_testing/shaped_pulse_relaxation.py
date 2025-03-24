@@ -7,20 +7,29 @@ delta = np.linspace(-100e6, 100e6, 128)  # Detuning as an array of 10 points
 omega_max = 2 * np.pi  # Maximum Rabi frequency in Hz
 N = 1024  # Number of time steps
 T1 = 1e-3  # Relaxation time in seconds
-T2 = 5e-6  # Dephasing time in seconds
+T2 = 1e-6  # Dephasing time in seconds
 T = 10e-6  # Total simulation duration in seconds
 
-tp = 100e-9
+tp = 10e-9
 B1 = np.pi / tp
+
+tau = 200e-9
+
+spectrum = np.exp(-0.5 * (delta / 25e6)**2.0)
 
 #def shaped_pulse(t, args):
 #    """Gaussian envelope for the pulse."""
 #    sigma = T / 20  # Standard deviation of the Gaussian pulse
 #    return omega_max * np.exp(-0.5 * ((t - T/2) / sigma) ** 2)
-def shaped_pulse(t, args):
 #    """Gaussian envelope for the pulse."""
 #    sigma = T / 20  # Standard deviation of the Gaussian pulse
-    return B1 * int(t < tp)
+#    return B1 * int(t < tp)
+#    return B1 * np.round(t < tp)
+#def shaped_pulse(t, args = None):
+def shaped_pulse(t):
+    p90 = B1/2 * np.array((t < tp), dtype = np.float64)
+    p180 = B1 * np.array(np.abs(t - tau) < tp, dtype = np.float64)
+    return p90 + p180
 
 # Define initial state
 psi0 = Qobj([[1], [0]])  # Spin-up state
@@ -34,6 +43,11 @@ if T2 > 0:
 
 # Define time evolution
 times = np.linspace(0, T, N)
+pulse_test = shaped_pulse(times)
+print(times)
+print(pulse_test)
+plt.figure('Pulse Shape')
+plt.plot(times,pulse_test)
 results = []
 for d in delta:
     H0 = d * sigmaz() / 2  # Static Hamiltonian
@@ -60,6 +74,13 @@ plt.figure()
 plt.plot(delta, Mx[:,-1], label = 'Mx')
 plt.plot(delta, My[:,-1], label = 'My')
 plt.plot(delta, Mz[:,-1], label = 'Mz')
+
+plt.figure('Integrate frequency')
+plt.plot(times, np.sum(Mx*spectrum.reshape(-1,1), axis = 0), label = 'Mx')
+plt.plot(times, np.sum(My*spectrum.reshape(-1,1), axis = 0), label = 'My')
+
+plt.figure('Spectrum')
+plt.plot(spectrum)
 
 
 
