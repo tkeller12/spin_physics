@@ -3,17 +3,17 @@ import matplotlib.pyplot as plt
 from qutip import sigmax, sigmay, sigmaz, mesolve, Qobj, destroy
 
 # Define system parameters
-delta = np.linspace(-100e6, 100e6, 128)  # Detuning as an array of 10 points
+delta = np.linspace(-500e6, 500e6, 1024)  # Detuning as an array of 10 points
 omega_max = 2 * np.pi  # Maximum Rabi frequency in Hz
 N = 1024  # Number of time steps
-T1 = 1e-3  # Relaxation time in seconds
-T2 = 1e-6  # Dephasing time in seconds
+T1 = 10e-3  # Relaxation time in seconds
+T2 = 10e-6  # Dephasing time in seconds
 T = 10e-6  # Total simulation duration in seconds
 
-tp = 10e-9
+tp = 32e-9
 B1 = np.pi / tp
 
-tau = 200e-9
+tau = 1000e-9
 
 spectrum = np.exp(-0.5 * (delta / 25e6)**2.0)
 
@@ -28,7 +28,7 @@ spectrum = np.exp(-0.5 * (delta / 25e6)**2.0)
 #def shaped_pulse(t, args = None):
 def shaped_pulse(t):
     p90 = B1/2 * np.array((t < tp), dtype = np.float64)
-    p180 = B1 * np.array(np.abs(t - tau) < tp, dtype = np.float64)
+    p180 = B1 * np.array(np.abs(t - tau) < (tp/2), dtype = np.float64)
     return p90 + p180
 
 # Define initial state
